@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<h1>Template</h1>
+<script>
+    $(document).ready(function(){
+        $('form').submit(function(event){
+            event.preventDefault(); // Prevent the default form submission
+            $.ajax({
+                type: 'POST',
+                url: '/',
+                data: {
+                    content: $('#content').val()
+                },
+                success: function(data) {
+                    // Display the response in the #responseText div
+                    console.log(data.response);
+                    $('#responseText').text(data.response); // Use .html() to set the HTML content
+                }
+            });
+        });
+    });
+</script>
+
+<form action="/" method="POST">
+    <input type="text" name="content" id="content">
+    <input type="submit" value="Add task">
+ </form>
+
+ <div id="responseArea" style="margin-top: 20px;">
+    <p>Response:</p>
+    <div id="responseText" style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
+        <!-- The response will be displayed here -->
+    </div>
+</div>

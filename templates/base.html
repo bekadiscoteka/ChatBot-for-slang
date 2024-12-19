@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <title>Slang detector</title>
+</head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong>Slang Detector</strong></li>
+        </ul>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#" role="button">Contact</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <div class="grid">
+            <section>
+                <hgroup>
+                    <h2>Введите ваше предложение здесь:</h2>
+                    <h3>Напишите предложение содержающее сленги, которые вам не понятны</h3>
+                </hgroup>
+                <form class="grid" action="/" method="POST" onsubmit="event.preventDefault(); displayOutput();">
+                    <input type="text" id="content" name="content" placeholder="Напишите что-то" aria-label="User input" required />
+                    <button type="submit">Submit</button>
+                </form>
+                <div id="outputSection" style="margin-top: 20px;">
+                    <h3>Здесь вы получите ответ</h3>
+                    <p id="responseText"></p>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="container">
+        <small><a href="#">Privacy Policy</a> • <a href="#">Terms of Use</a></small>
+    </footer>
+    <script>
+        $(document).ready(function(){
+            $('form').submit(function(event){
+                event.preventDefault(); // Prevent the default form submission
+                $.ajax({
+                    type: 'POST',
+                    url: '/',
+                    data: {
+                        content: $('#content').val()
+                    },
+                    success: function(data) {
+                        // Display the response in the #responseText div
+                        console.log(data.response);
+                        $('#responseText').text(data.response); // Use .html() to set the HTML content
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        function displayOutput() {
+            var input = document.getElementById('content').value;
+            
+
+            console.log('HLLO');
+    
+            // Get the submit button and change its text to include the spinner
+            var submitButton = document.querySelector('button[type="submit"]');
+            submitButton.disabled = true; // Disable the button to prevent multiple submissions
+            submitButton.innerHTML = '<span class="loading-spinner"></span> Submitting...';
+    
+            // Simulate a server response with setTimeout
+            setTimeout(function() {
+                submitButton.disabled = false; // Re-enable the button
+                submitButton.innerHTML = 'Submit'; // Reset button text
+                // Here, you would handle the actual response from the server
+                alert('Input submitted!');
+            }, 4000); // Simulate server wait time of 2 seconds
+        }
+    </script>
+    
+</body>
+</html>
